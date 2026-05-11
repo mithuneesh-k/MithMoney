@@ -47,7 +47,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
       }
 
       final authenticated = await _auth.authenticate(
-        localizedReason: 'Please authenticate to open Trackify',
+        localizedReason: 'Please authenticate to open MithMoney',
       );
 
       if (authenticated && mounted) {
@@ -120,7 +120,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                   const SizedBox(height: 28),
 
                   Text(
-                    'Trackify',
+                    'MithMoney',
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 28,
                       fontWeight: FontWeight.w800,

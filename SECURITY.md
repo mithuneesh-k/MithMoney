@@ -8,12 +8,12 @@
 
 ## Privacy Design
 
-Trackify is designed from the ground up to be 100% offline and private:
+MithMoney is designed from the ground up to be 100% offline and private:
 
 - **No network calls** — the app never connects to any server
 - **No analytics or tracking** — zero telemetry
 - **SMS data stays local** — bank SMS are read and stored only on your device
-- **Biometric data never accessed** — App Lock delegates entirely to Android BiometricPrompt; Trackify never reads or stores your fingerprint or face data
+- **Biometric data never accessed** — App Lock delegates entirely to Android BiometricPrompt; MithMoney never reads or stores your fingerprint or face data
 - **No cloud sync** — backups are exported as local files only
 
 ## Reporting a Vulnerability

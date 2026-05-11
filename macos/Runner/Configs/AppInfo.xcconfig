@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = trackify
+PRODUCT_NAME = mithmoney
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.blixcode.trackify
+PRODUCT_BUNDLE_IDENTIFIER = com.blixcode.mithmoney
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2026 com.blixcode. All rights reserved.

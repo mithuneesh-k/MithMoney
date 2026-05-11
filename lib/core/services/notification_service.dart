@@ -134,7 +134,7 @@ class NotificationService {
     }
 
     const androidDetails = AndroidNotificationDetails(
-      'trackify_daily_reminder',
+      'mithmoney_daily_reminder',
       'Daily Reminder',
       channelDescription: 'Reminds you to log your daily expenses',
       importance: Importance.max,
@@ -211,7 +211,7 @@ class NotificationService {
     if (!_initialized) await init();
     try {
       const androidDetails = AndroidNotificationDetails(
-        'trackify_test',
+        'mithmoney_test',
         'Test Alerts',
         channelDescription: 'Testing channel for immediate verification',
         importance: Importance.max,
@@ -235,7 +235,7 @@ class NotificationService {
         id: kDailyReminderNotifId + 1,
         title: '🚀 Immediate Test Alert',
         body:
-            'If you can see this, your phone is allowing Trackify notifications natively!',
+            'If you can see this, your phone is allowing MithMoney notifications natively!',
         notificationDetails: details,
       );
       AppLogger.i('NotificationService', 'Immediate test notification fired');

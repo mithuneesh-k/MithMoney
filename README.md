@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="docs/assets/logo.png" alt="Trackify Logo" width="100" height="100" style="border-radius:22px"/>
+<img src="docs/assets/logo.png" alt="MithMoney Logo" width="100" height="100" style="border-radius:22px"/>
 
-# Trackify
+# MithMoney
 
 **Track every rupee, own your future.**
 
@@ -12,10 +12,10 @@ Beautiful glassmorphism UI · Riverpod state · Hive local database · Zero data
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Flutter](https://img.shields.io/badge/Flutter-3.0%2B-02569B?logo=flutter)](https://flutter.dev)
 [![Dart](https://img.shields.io/badge/Dart-3.0%2B-0175C2?logo=dart)](https://dart.dev)
-[![CI](https://github.com/aswin-blix/trackify/actions/workflows/flutter_ci.yml/badge.svg)](https://github.com/aswin-blix/trackify/actions)
+[![CI](https://github.com/aswin-blix/mithmoney/actions/workflows/flutter_ci.yml/badge.svg)](https://github.com/aswin-blix/mithmoney/actions)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[**Download APK**](../../releases/latest) · [**Landing Page**](https://aswin-blix.github.io/trackify) · [**Report Bug**](../../issues/new?template=bug_report.md) · [**Request Feature**](../../issues/new?template=feature_request.md)
+[**Download APK**](../../releases/latest) · [**Landing Page**](https://aswin-blix.github.io/mithmoney) · [**Report Bug**](../../issues/new?template=bug_report.md) · [**Request Feature**](../../issues/new?template=feature_request.md)
 
 </div>
 
@@ -74,8 +74,8 @@ Beautiful glassmorphism UI · Riverpod state · Hive local database · Zero data
 
 ```bash
 # 1. Clone
-git clone https://github.com/aswin-blix/trackify.git
-cd trackify
+git clone https://github.com/aswin-blix/mithmoney.git
+cd mithmoney
 
 # 2. Install dependencies
 flutter pub get

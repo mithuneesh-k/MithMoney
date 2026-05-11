@@ -217,7 +217,7 @@ class _WelcomePage extends StatelessWidget {
               curve: Curves.elasticOut),
           const SizedBox(height: 32),
           Text(
-            'Welcome to Trackify',
+            'Welcome to MithMoney',
             style: GoogleFonts.plusJakartaSans(
               fontSize: 28,
               fontWeight: FontWeight.w800,
@@ -436,7 +436,7 @@ class _PermissionsPage extends StatelessWidget {
           ).animate().fadeIn(duration: 400.ms),
           const SizedBox(height: 8),
           Text(
-            'Enable reminders and optionally let Trackify scan your bank SMS — all stays on your device.',
+            'Enable reminders and optionally let MithMoney scan your bank SMS — all stays on your device.',
             style: GoogleFonts.plusJakartaSans(
               fontSize: 15,
               color: Theme.of(context)

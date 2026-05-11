@@ -55,7 +55,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
     try {
       final path = await ref.read(backupRepoProvider).exportToCsv();
       await SharePlus.instance
-          .share(ShareParams(files: [XFile(path)], text: 'Trackify Export'));
+          .share(ShareParams(files: [XFile(path)], text: 'MithMoney Export'));
     } catch (e) {
       _showError('CSV export failed: $e');
     }

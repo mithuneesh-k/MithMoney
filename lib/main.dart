@@ -90,11 +90,11 @@ void main() async {
     );
   }
 
-  runApp(const ProviderScope(child: TrackifyApp()));
+  runApp(const ProviderScope(child: MithMoneyApp()));
 }
 
-class TrackifyApp extends ConsumerWidget {
-  const TrackifyApp({super.key});
+class MithMoneyApp extends ConsumerWidget {
+  const MithMoneyApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

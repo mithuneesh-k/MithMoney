@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.blixcode.trackify"
+    namespace = "com.blixcode.mithmoney"
     compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
@@ -20,7 +20,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.blixcode.trackify"
+        applicationId = "com.blixcode.mithmoney"
         minSdk = flutter.minSdkVersion
         targetSdk = 36
         versionCode = flutter.versionCode
@@ -39,7 +39,7 @@ android {
     applicationVariants.all {
         outputs.all {
             val output = this as? com.android.build.gradle.internal.api.BaseVariantOutputImpl
-            output?.outputFileName = "trackify.apk"
+            output?.outputFileName = "mithmoney.apk"
         }
     }
 }

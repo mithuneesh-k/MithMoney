@@ -1,4 +1,4 @@
-package com.blixcode.trackify
+package com.blixcode.mithmoney
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

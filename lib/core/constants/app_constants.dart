@@ -33,9 +33,9 @@ const Curve kCurveSoft = Curves.easeInOutCubic;
 const Curve kCurveBounce = Curves.elasticOut;
 
 // ─── App Info ─────────────────────────────────────────────────────────────────
-const String kAppName = 'Trackify';
+const String kAppName = 'MithMoney';
 const String kAppVersion = '1.0.0';
-const String kBackupFolder = 'TrackifyBackups';
+const String kBackupFolder = 'MithMoneyBackups';
 
 // ─── Supported Currencies ─────────────────────────────────────────────────────
 const List<Map<String, String>> kCurrencies = [

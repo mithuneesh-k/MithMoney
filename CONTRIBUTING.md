@@ -1,4 +1,4 @@
-# Contributing to Trackify
+# Contributing to MithMoney
 
 Thank you for taking the time to contribute! Here's how to get started.
 
@@ -8,8 +8,8 @@ Thank you for taking the time to contribute! Here's how to get started.
 
 1. Fork the repository and clone your fork:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/trackify.git
-   cd trackify
+   git clone https://github.com/YOUR_USERNAME/mithmoney.git
+   cd mithmoney
    ```
 
 2. Install Flutter (≥ 3.0.0): https://docs.flutter.dev/get-started/install
