@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/utils/formatters.dart';
 import '../../data/models/transaction_model.dart';
 import '../../shared/providers/app_providers.dart';
-import '../../shared/widgets/glass_card.dart';
+import '../../shared/widgets/app_card.dart';
 import '../../shared/widgets/animated_counter.dart';
 
 class AnalyticsScreen extends ConsumerStatefulWidget {
@@ -93,7 +93,6 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen>
       ..sort((a, b) => b.value.compareTo(a.value));
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
       body: SafeArea(
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
@@ -152,7 +151,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen>
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                  child: GlassCard(
+                  child: AppCard(
                     padding: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,7 +193,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen>
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                  child: GlassCard(
+                  child: AppCard(
                     padding: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,7 +234,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen>
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 120),
-                child: GlassCard(
+                child: AppCard(
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -281,7 +280,7 @@ class _PeriodTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GlassCard(
+    return AppCard(
       padding: const EdgeInsets.all(4),
       child: TabBar(
         controller: controller,
@@ -328,16 +327,9 @@ class _SummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GlassCard(
+    return AppCard(
       padding: const EdgeInsets.all(16),
-      gradient: LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [
-          color.withValues(alpha: 0.15),
-          color.withValues(alpha: 0.05),
-        ],
-      ),
+      color: color.withValues(alpha: 0.1),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -664,16 +656,7 @@ class _MonthlyBarChart extends StatelessWidget {
                   width: 22,
                   borderRadius:
                       const BorderRadius.vertical(top: Radius.circular(6)),
-                  gradient: LinearGradient(
-                    colors: isCurrentMonth
-                        ? [accent.withValues(alpha: 0.8), accent]
-                        : [
-                            accent.withValues(alpha: 0.2),
-                            accent.withValues(alpha: 0.4)
-                          ],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                  ),
+                  color: isCurrentMonth ? accent : accent.withValues(alpha: 0.25),
                 ),
               ],
             );

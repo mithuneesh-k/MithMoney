@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/theme/app_colors.dart';
 import '../../shared/providers/app_providers.dart';
 import '../../shared/widgets/app_bottom_nav.dart';
 import '../dashboard/dashboard_screen.dart';
@@ -91,17 +90,10 @@ class _HomeShellState extends ConsumerState<HomeShell>
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
       extendBody: true,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient:
-              isDark ? darkBackgroundGradient() : lightBackgroundGradient(),
-        ),
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 200),
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 200),
           transitionBuilder: (child, animation) {
             return FadeTransition(
               opacity: animation,
@@ -119,7 +111,6 @@ class _HomeShellState extends ConsumerState<HomeShell>
             child: _buildScreen(),
           ),
         ),
-      ),
       bottomNavigationBar: AppBottomNav(
         currentIndex: _currentTab,
         onTap: _onTabTap,

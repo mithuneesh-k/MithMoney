@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../data/models/category_model.dart';
 import '../../shared/providers/app_providers.dart';
-import '../../shared/widgets/glass_card.dart';
+import '../../shared/widgets/app_card.dart';
 import '../../shared/widgets/budget_progress_bar.dart';
 import '../../shared/widgets/animated_counter.dart';
 
@@ -72,7 +72,7 @@ class _BudgetScreenState extends ConsumerState<BudgetScreen> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-                child: GlassCard(
+                child: AppCard(
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,7 +202,7 @@ class _BudgetScreenState extends ConsumerState<BudgetScreen> {
 
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 16),
-                      child: GlassCard(
+                      child: AppCard(
                         padding: const EdgeInsets.all(16),
                         child: Column(
                           children: [

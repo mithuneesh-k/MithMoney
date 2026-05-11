@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:timezone/data/latest_all.dart' as tz_data;
@@ -16,7 +17,7 @@ class NotificationService {
 
   // ── Initialise ──────────────────────────────────────────────────────────────
   Future<void> init() async {
-    if (_initialized) return;
+    if (_initialized || kIsWeb) return;
     try {
       tz_data.initializeTimeZones();
       // Resolve the device's local timezone using the UTC offset.
@@ -64,6 +65,7 @@ class NotificationService {
 
   // ── Request POST_NOTIFICATIONS permission (Android 13+) ────────────────────
   Future<bool> requestPermission() async {
+    if (kIsWeb) return true;
     try {
       final status = await Permission.notification.request();
 
@@ -94,6 +96,7 @@ class NotificationService {
   }
 
   Future<bool> hasPermission() async {
+    if (kIsWeb) return true;
     return Permission.notification.isGranted;
   }
 
@@ -102,6 +105,7 @@ class NotificationService {
     required int hour,
     required int minute,
   }) async {
+    if (kIsWeb) return;
     if (!_initialized) await init();
 
     // Cancel existing before rescheduling

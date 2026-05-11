@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../core/theme/app_colors.dart';
 import '../../core/constants/app_constants.dart';
 import '../../shared/providers/app_providers.dart';
-import '../../shared/widgets/glass_card.dart';
+import '../../shared/widgets/app_card.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -74,10 +73,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient:
-              isDark ? darkBackgroundGradient() : lightBackgroundGradient(),
-        ),
+        decoration: const BoxDecoration(),
         child: SafeArea(
           child: Column(
             children: [
@@ -198,12 +194,7 @@ class _WelcomePage extends StatelessWidget {
             width: 80,
             height: 80,
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Theme.of(context).colorScheme.primary,
-                  Theme.of(context).colorScheme.secondary,
-                ],
-              ),
+              color: Theme.of(context).colorScheme.primary,
               borderRadius: BorderRadius.circular(24),
             ),
             child: const Icon(
@@ -239,7 +230,7 @@ class _WelcomePage extends StatelessWidget {
             textAlign: TextAlign.center,
           ).animate(delay: 300.ms).fadeIn(duration: 400.ms),
           const SizedBox(height: 40),
-          GlassCard(
+          AppCard(
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -322,7 +313,7 @@ class _BudgetPage extends StatelessWidget {
             textAlign: TextAlign.center,
           ).animate(delay: 100.ms).fadeIn(duration: 400.ms),
           const SizedBox(height: 32),
-          GlassCard(
+          AppCard(
             padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -448,7 +439,7 @@ class _PermissionsPage extends StatelessWidget {
             textAlign: TextAlign.center,
           ).animate(delay: 100.ms).fadeIn(duration: 400.ms),
           const SizedBox(height: 32),
-          GlassCard(
+          AppCard(
             padding: const EdgeInsets.all(4),
             child: Column(
               children: [

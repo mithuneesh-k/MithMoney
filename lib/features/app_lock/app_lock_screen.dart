@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:local_auth/local_auth.dart';
-import '../../core/theme/app_colors.dart';
 
 /// Full-screen lock gate. Call via Navigator.pushReplacementNamed('/lock').
 /// On success, navigates to [nextRoute] (default '/home').
@@ -27,6 +27,10 @@ class _AppLockScreenState extends State<AppLockScreen> {
   }
 
   Future<void> _authenticate() async {
+    if (kIsWeb) {
+      if (mounted) Navigator.of(context).pushReplacementNamed(widget.nextRoute);
+      return;
+    }
     if (_authenticating) return;
     setState(() {
       _authenticating = true;
@@ -74,10 +78,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient:
-              isDark ? darkBackgroundGradient() : lightBackgroundGradient(),
-        ),
+        decoration: const BoxDecoration(),
         child: SafeArea(
           child: Center(
             child: Padding(
@@ -90,18 +91,8 @@ class _AppLockScreenState extends State<AppLockScreen> {
                     width: 90,
                     height: 90,
                     decoration: BoxDecoration(
-                      gradient:
-                          isDark ? accentGradientDark() : accentGradientLight(),
+                      color: Theme.of(context).colorScheme.primary,
                       borderRadius: BorderRadius.circular(26),
-                      boxShadow: [
-                        BoxShadow(
-                          color:
-                              (isDark ? DarkColors.accent : LightColors.accent)
-                                  .withValues(alpha: 0.4),
-                          blurRadius: 30,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
                     ),
                     child: const Center(
                       child: Icon(
@@ -147,7 +138,7 @@ class _AppLockScreenState extends State<AppLockScreen> {
                       width: 40,
                       height: 40,
                       child: CircularProgressIndicator(
-                        color: isDark ? DarkColors.accent : LightColors.accent,
+                        color: Theme.of(context).colorScheme.primary,
                         strokeWidth: 3,
                       ),
                     )
@@ -181,9 +172,8 @@ class _AppLockScreenState extends State<AppLockScreen> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            isDark ? DarkColors.accent : LightColors.accent,
-                        foregroundColor: Colors.white,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 36,
                           vertical: 14,

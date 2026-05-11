@@ -161,6 +161,16 @@ class TransactionTile extends StatelessWidget {
                           ),
                         ],
                       ),
+                    ] else if (transaction.accountId != null) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        'Deleted Account',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3),
+                        ),
+                      ),
                     ],
                   ],
                 ),

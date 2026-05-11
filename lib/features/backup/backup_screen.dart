@@ -1,5 +1,4 @@
 import 'dart:io' as io;
-import 'package:flutter/foundation.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -8,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../core/utils/formatters.dart';
 import '../../shared/providers/app_providers.dart';
-import '../../shared/widgets/glass_card.dart';
+import '../../shared/widgets/app_card.dart';
 
 class BackupScreen extends ConsumerStatefulWidget {
   const BackupScreen({super.key});
@@ -137,7 +136,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.all(20),
-                child: GlassCard(
+                child: AppCard(
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,7 +235,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
-                child: GlassCard(
+                child: AppCard(
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

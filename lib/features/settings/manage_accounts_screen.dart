@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:uuid/uuid.dart';
 import '../../data/models/account_model.dart';
 import '../../shared/providers/app_providers.dart';
-import '../../shared/widgets/glass_card.dart';
+import '../../shared/widgets/app_card.dart';
 
 class ManageAccountsScreen extends ConsumerWidget {
   const ManageAccountsScreen({super.key});
@@ -30,7 +30,7 @@ class ManageAccountsScreen extends ConsumerWidget {
           final account = accounts[index];
           return Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: GlassCard(
+            child: AppCard(
               padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
@@ -255,23 +255,40 @@ class _AccountDialogState extends ConsumerState<_AccountDialog> {
       actions: [
         TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
         ElevatedButton(
-          onPressed: () {
-            if (_nameController.text.isEmpty) return;
-            final account = AccountModel(
-              id: widget.account?.id ?? const Uuid().v4(),
-              name: _nameController.text,
-              type: _selectedType,
-              balance: double.tryParse(_balanceController.text) ?? 0,
-              colorValue: _selectedColor.toARGB32(),
-              iconCode: _selectedIcon.codePoint,
-              createdAt: widget.account?.createdAt ?? DateTime.now(),
-            );
-            if (widget.account == null) {
-              ref.read(accountProvider.notifier).add(account);
-            } else {
-              ref.read(accountProvider.notifier).update(account);
+          onPressed: () async {
+            final name = _nameController.text.trim();
+            if (name.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Please enter an account name')),
+              );
+              return;
             }
-            Navigator.pop(context);
+            
+            try {
+              final account = AccountModel(
+                id: widget.account?.id ?? const Uuid().v4(),
+                name: name,
+                type: _selectedType,
+                balance: double.tryParse(_balanceController.text) ?? 0,
+                colorValue: _selectedColor.toARGB32(),
+                iconCode: _selectedIcon.codePoint,
+                createdAt: widget.account?.createdAt ?? DateTime.now(),
+              );
+              
+              if (widget.account == null) {
+                await ref.read(accountProvider.notifier).add(account);
+              } else {
+                await ref.read(accountProvider.notifier).update(account);
+              }
+              
+              if (context.mounted) Navigator.pop(context);
+            } catch (e) {
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Failed to save account: $e')),
+                );
+              }
+            }
           },
           child: const Text('Save'),
         ),

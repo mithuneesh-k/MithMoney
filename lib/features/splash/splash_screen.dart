@@ -111,10 +111,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
           child: Transform.scale(scale: _exitScale.value, child: child),
         ),
         child: Container(
-          decoration: BoxDecoration(
-            gradient:
-                isDark ? darkBackgroundGradient() : lightBackgroundGradient(),
-          ),
+          decoration: const BoxDecoration(),
           child: Stack(
             children: [
               // Particle burst
@@ -182,19 +179,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       width: 100,
       height: 100,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [accent, accent.withValues(alpha: 0.7)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(28),
-        boxShadow: [
-          BoxShadow(
-            color: accent.withValues(alpha: 0.5),
-            blurRadius: 30,
-            offset: const Offset(0, 10),
-          ),
-        ],
       ),
       child: const Center(
         child: Icon(Icons.track_changes_rounded, size: 52, color: Colors.white),

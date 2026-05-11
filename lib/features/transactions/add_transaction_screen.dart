@@ -11,8 +11,9 @@ import '../../data/models/transaction_model.dart';
 import '../../data/models/category_model.dart';
 import '../../data/models/account_model.dart';
 import '../../shared/providers/app_providers.dart';
-import '../../shared/widgets/glass_card.dart';
+import '../../shared/widgets/app_card.dart';
 import '../categories/manage_categories_screen.dart';
+import '../settings/manage_accounts_screen.dart';
 
 class AddTransactionScreen extends ConsumerStatefulWidget {
   final TransactionModel? existingTransaction;
@@ -543,7 +544,7 @@ class _AmountField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GlassCard(
+    return AppCard(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
       child: Row(
         children: [
@@ -772,7 +773,7 @@ class _DateButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GlassCard(
+    return AppCard(
       onTap: onTap,
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       child: Row(
@@ -805,7 +806,7 @@ class _ReceiptButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GlassCard(
+    return AppCard(
       onTap: onTap,
       padding: const EdgeInsets.all(14),
       child: Icon(
@@ -858,8 +859,47 @@ class _AccountSelector extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 20),
             physics: const BouncingScrollPhysics(),
-            itemCount: accounts.length,
+            itemCount: accounts.length + 1,
             itemBuilder: (ctx, i) {
+              if (i == accounts.length) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => const ManageAccountsScreen(),
+                    ));
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.06),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.12),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.add_rounded,
+                          size: 18,
+                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'New',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+
               final acc = accounts[i];
               final isSelected = acc.id == selectedId;
               return GestureDetector(

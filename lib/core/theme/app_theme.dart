@@ -12,19 +12,21 @@ class AppTheme {
         seedColor: DarkColors.accent,
         brightness: Brightness.dark,
         primary: DarkColors.accent,
-        onPrimary: Colors.white,
+        onPrimary: const Color(0xFF381E72),
         secondary: DarkColors.accentSecondary,
-        surface: DarkColors.cardSurface,
-        background: DarkColors.backgroundStart,
+        surface: DarkColors.surface,
+        onSurface: DarkColors.textPrimary,
+        surfaceContainerHighest: DarkColors.surfaceVariant,
+        background: DarkColors.background,
         error: DarkColors.expenseRed,
       ),
-      scaffoldBackgroundColor: DarkColors.backgroundStart,
+      scaffoldBackgroundColor: DarkColors.background,
       textTheme:
           _buildTextTheme(DarkColors.textPrimary, DarkColors.textSecondary),
       appBarTheme: AppBarTheme(
-        backgroundColor: Colors.transparent,
+        backgroundColor: DarkColors.background,
         elevation: 0,
-        scrolledUnderElevation: 0,
+        scrolledUnderElevation: 2,
         systemOverlayStyle: SystemUiOverlayStyle.light,
         titleTextStyle: GoogleFonts.plusJakartaSans(
           color: DarkColors.textPrimary,
@@ -34,8 +36,9 @@ class AppTheme {
         iconTheme: const IconThemeData(color: DarkColors.textPrimary),
       ),
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: DarkColors.backgroundStart,
-        indicatorColor: DarkColors.accent.withValues(alpha: 0.2),
+        backgroundColor: DarkColors.surface,
+        elevation: 0,
+        indicatorColor: DarkColors.accent.withValues(alpha: 0.12),
         labelTextStyle: WidgetStateProperty.all(
           GoogleFonts.plusJakartaSans(
             fontSize: 12,
@@ -47,10 +50,10 @@ class AppTheme {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: DarkColors.accent,
-          foregroundColor: Colors.white,
+          foregroundColor: const Color(0xFF381E72),
           elevation: 0,
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           textStyle: GoogleFonts.plusJakartaSans(
             fontWeight: FontWeight.w700,
@@ -59,7 +62,7 @@ class AppTheme {
         ),
       ),
       inputDecorationTheme: _buildInputTheme(
-        DarkColors.cardSurface,
+        DarkColors.surface,
         DarkColors.divider,
         DarkColors.textPrimary,
         DarkColors.textSecondary,
@@ -67,15 +70,15 @@ class AppTheme {
       ),
       dividerTheme: const DividerThemeData(color: DarkColors.divider, thickness: 1),
       bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: Color(0xFF1A1F3A),
-        modalBackgroundColor: Color(0xFF1A1F3A),
+        backgroundColor: DarkColors.surface,
+        modalBackgroundColor: DarkColors.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
         ),
       ),
       dialogTheme: DialogThemeData(
-        backgroundColor: const Color(0xFF1A1F3A),
-        surfaceTintColor: const Color(0xFF1A1F3A),
+        backgroundColor: DarkColors.surface,
+        surfaceTintColor: DarkColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
       ),
     );
@@ -91,18 +94,20 @@ class AppTheme {
         primary: LightColors.accent,
         onPrimary: Colors.white,
         secondary: LightColors.accentSecondary,
-        surface: LightColors.cardSurface,
-        background: LightColors.backgroundStart,
+        surface: LightColors.surface,
+        onSurface: LightColors.textPrimary,
+        surfaceContainerHighest: LightColors.surfaceVariant,
+        background: LightColors.background,
         error: LightColors.expenseRed,
       ),
-      scaffoldBackgroundColor: LightColors.backgroundStart,
+      scaffoldBackgroundColor: LightColors.background,
       textTheme:
           _buildTextTheme(LightColors.textPrimary, LightColors.textSecondary),
       appBarTheme: AppBarTheme(
-        backgroundColor: Colors.white,
+        backgroundColor: LightColors.background,
         centerTitle: false,
         elevation: 0,
-        scrolledUnderElevation: 0,
+        scrolledUnderElevation: 2,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         titleTextStyle: GoogleFonts.plusJakartaSans(
           color: LightColors.textPrimary,
@@ -112,8 +117,9 @@ class AppTheme {
         iconTheme: const IconThemeData(color: LightColors.textPrimary),
       ),
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: Colors.white,
-        indicatorColor: LightColors.accent.withValues(alpha: 0.15),
+        backgroundColor: LightColors.surface,
+        elevation: 0,
+        indicatorColor: LightColors.accent.withValues(alpha: 0.12),
         labelTextStyle: WidgetStateProperty.all(
           GoogleFonts.plusJakartaSans(
             fontSize: 12,
@@ -127,7 +133,7 @@ class AppTheme {
           foregroundColor: Colors.white,
           elevation: 0,
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           textStyle: GoogleFonts.plusJakartaSans(
             fontWeight: FontWeight.w700,
@@ -136,7 +142,7 @@ class AppTheme {
         ),
       ),
       inputDecorationTheme: _buildInputTheme(
-        LightColors.backgroundEnd.withValues(alpha: 0.5),
+        LightColors.background,
         LightColors.divider,
         LightColors.textPrimary,
         LightColors.textSecondary,
@@ -145,23 +151,23 @@ class AppTheme {
       dividerTheme:
           const DividerThemeData(color: LightColors.divider, thickness: 1),
       bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: Colors.white,
-        modalBackgroundColor: Colors.white,
+        backgroundColor: LightColors.surface,
+        modalBackgroundColor: LightColors.surface,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
         ),
       ),
       dialogTheme: DialogThemeData(
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.white,
+        backgroundColor: LightColors.surface,
+        surfaceTintColor: LightColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
       ),
       cardTheme: CardThemeData(
-        color: Colors.white,
+        color: LightColors.surface,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(24),
           side: const BorderSide(color: LightColors.divider, width: 1),
         ),
       ),
@@ -215,21 +221,23 @@ class AppTheme {
     return InputDecorationTheme(
       filled: true,
       fillColor: fill,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(16),
         borderSide: BorderSide(color: border, width: 1.2),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(16),
         borderSide: BorderSide(color: border, width: 1.2),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
-        borderSide: BorderSide(color: focus, width: 1.8),
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(color: focus, width: 2),
       ),
       hintStyle: GoogleFonts.plusJakartaSans(color: hint, fontSize: 14),
       labelStyle: GoogleFonts.plusJakartaSans(color: hint, fontSize: 14),
+      prefixIconColor: hint,
+      suffixIconColor: hint,
     );
   }
 }

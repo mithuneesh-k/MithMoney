@@ -244,25 +244,56 @@ final transactionProvider =
 class AccountNotifier extends StateNotifier<List<AccountModel>> {
   final AccountRepository _repo;
 
-  AccountNotifier(this._repo) : super(_repo.getAll());
+  AccountNotifier(this._repo) : super(_repo.getAll()) {
+    _repo.listenable.addListener(_onBoxChanged);
+  }
+
+  void _onBoxChanged() {
+    if (mounted) refresh();
+  }
+
+  @override
+  void dispose() {
+    _repo.listenable.removeListener(_onBoxChanged);
+    super.dispose();
+  }
 
   void refresh() {
     state = _repo.getAll();
   }
 
   Future<void> add(AccountModel acc) async {
-    await _repo.add(acc);
-    refresh();
+    try {
+      AppLogger.i('AccountNotifier', 'Adding account: ${acc.name}');
+      await _repo.add(acc);
+      // No need to call refresh() if we use listenable, but let's keep it for safety or just rely on listener
+      refresh();
+    } catch (e, stack) {
+      AppLogger.e('AccountNotifier', 'Failed to add account', e, stack);
+      rethrow;
+    }
   }
 
   Future<void> update(AccountModel acc) async {
-    await _repo.update(acc);
-    refresh();
+    try {
+      AppLogger.i('AccountNotifier', 'Updating account: ${acc.name}');
+      await _repo.update(acc);
+      refresh();
+    } catch (e, stack) {
+      AppLogger.e('AccountNotifier', 'Failed to update account', e, stack);
+      rethrow;
+    }
   }
 
   Future<void> delete(String id) async {
-    await _repo.delete(id);
-    refresh();
+    try {
+      AppLogger.i('AccountNotifier', 'Deleting account id: $id');
+      await _repo.delete(id);
+      refresh();
+    } catch (e, stack) {
+      AppLogger.e('AccountNotifier', 'Failed to delete account', e, stack);
+      rethrow;
+    }
   }
 
   AccountModel? getById(String id) => _repo.getById(id);

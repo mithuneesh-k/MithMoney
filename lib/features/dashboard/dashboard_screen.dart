@@ -7,7 +7,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/utils/formatters.dart';
 import '../../data/models/transaction_model.dart';
 import '../../shared/providers/app_providers.dart';
-import '../../shared/widgets/glass_card.dart';
+import '../../shared/widgets/app_card.dart';
 import '../../shared/widgets/animated_counter.dart';
 import '../../shared/widgets/section_header.dart';
 import '../../shared/widgets/transaction_tile.dart';
@@ -76,28 +76,17 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     final accent = Theme.of(context).colorScheme.primary;
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
           // Header section — greeting + balance card in a tinted container for light mode
           SliverToBoxAdapter(
             child: Container(
-              decoration: isDark
-                  ? null
-                  : BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          accent.withValues(alpha: 0.13),
-                          Theme.of(context)
-                              .colorScheme
-                              .secondary
-                              .withValues(alpha: 0.07),
-                        ],
-                      ),
-                      borderRadius: const BorderRadius.vertical(
+              decoration: BoxDecoration(
+                color: isDark 
+                    ? Colors.transparent 
+                    : accent.withValues(alpha: 0.08),
+                borderRadius: const BorderRadius.vertical(
                         bottom: Radius.circular(28),
                       ),
                     ),
@@ -255,7 +244,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-              child: GlassCard(
+              child: AppCard(
                 padding: const EdgeInsets.all(16),
                 child: _MiniBarChart(
                   transactions:
@@ -369,21 +358,8 @@ class _BalanceCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final accent = Theme.of(context).colorScheme.primary;
 
-    return GlassCard(
+    return AppCard(
       padding: const EdgeInsets.all(20),
-      gradient: LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: isDark
-            ? [
-                accent.withValues(alpha: 0.2),
-                Colors.white.withValues(alpha: 0.05),
-              ]
-            : [
-                accent.withValues(alpha: 0.12),
-                Colors.white.withValues(alpha: 0.7),
-              ],
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -755,25 +731,16 @@ class _TipCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GlassCard(
+    return AppCard(
       padding: const EdgeInsets.all(16),
-      gradient: LinearGradient(
-        colors: [
-          const Color(0xFF6C63FF).withValues(alpha: 0.15),
-          const Color(0xFF00D4FF).withValues(alpha: 0.08),
-        ],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
+      color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3),
       child: Row(
         children: [
           Container(
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFF6C63FF), Color(0xFF00D4FF)],
-              ),
+              color: Theme.of(context).colorScheme.primary,
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(Icons.lightbulb_rounded,

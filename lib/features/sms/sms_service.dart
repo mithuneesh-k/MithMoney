@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_sms_inbox/flutter_sms_inbox.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../data/models/bank_sms_message.dart';
@@ -10,18 +11,20 @@ class SmsService {
   SmsService(this._repo);
 
   Future<bool> requestPermission() async {
+    if (kIsWeb) return false;
     final status = await Permission.sms.request();
     return status.isGranted;
   }
 
   Future<bool> hasPermission() async {
+    if (kIsWeb) return false;
     return Permission.sms.isGranted;
   }
 
   /// Reads SMS inbox for each sender and stores new bank transaction messages.
   /// Returns count of newly added messages.
   Future<int> syncSms(List<String> senderIds) async {
-    if (!await hasPermission()) return 0;
+    if (kIsWeb || !await hasPermission()) return 0;
 
     final query = SmsQuery();
     int newCount = 0;
