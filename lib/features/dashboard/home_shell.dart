@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:home_widget/home_widget.dart';
 import '../../shared/providers/app_providers.dart';
 import '../../shared/widgets/app_bottom_nav.dart';
 import '../dashboard/dashboard_screen.dart';
@@ -24,6 +25,18 @@ class _HomeShellState extends ConsumerState<HomeShell>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _checkWidgetLaunch();
+  }
+
+  void _checkWidgetLaunch() {
+    HomeWidget.initiallyLaunchedFromHomeWidget().then(_handleWidgetLaunch);
+    HomeWidget.widgetClicked.listen(_handleWidgetLaunch);
+  }
+
+  void _handleWidgetLaunch(Uri? uri) {
+    if (uri?.host == 'add_expense') {
+      _openAddTransaction();
+    }
   }
 
   @override

@@ -12,6 +12,7 @@ import '../../data/models/account_model.dart';
 import '../../data/models/bank_sms_message.dart';
 import '../../data/repositories/account_repository.dart';
 import '../../data/repositories/import_repository.dart';
+import '../../core/services/widget_service.dart';
 import '../../features/sms/sms_service.dart';
 
 // ─── Repository Providers ─────────────────────────────────────────────────────
@@ -149,11 +150,32 @@ final settingsProvider =
 class TransactionNotifier extends StateNotifier<List<TransactionModel>> {
   final TransactionRepository _repo;
   final AccountRepository? _accountRepo;
+  final Ref _ref;
 
-  TransactionNotifier(this._repo, [this._accountRepo]) : super(_repo.getAll());
+  TransactionNotifier(this._ref, this._repo, [this._accountRepo])
+      : super(_repo.getAll()) {
+    _updateWidget();
+  }
 
   void refresh() {
     state = _repo.getAll();
+    _updateWidget();
+  }
+
+  Future<void> _updateWidget() async {
+    try {
+      final balance = _repo.getTotalIncome() - _repo.getTotalExpense();
+      final lastTx = state.isNotEmpty ? state.first : null;
+      final settings = _ref.read(settingsProvider);
+
+      await WidgetService.updateWidget(
+        totalBalance: balance,
+        currencySymbol: settings.currencySymbol,
+        lastTransaction: lastTx,
+      );
+    } catch (e) {
+      // Ignore if settings not yet initialized
+    }
   }
 
   Future<void> add(TransactionModel tx) async {
@@ -244,6 +266,7 @@ class TransactionNotifier extends StateNotifier<List<TransactionModel>> {
 final transactionProvider =
     StateNotifierProvider<TransactionNotifier, List<TransactionModel>>((ref) {
   return TransactionNotifier(
+    ref,
     ref.watch(transactionRepoProvider),
     ref.watch(accountRepoProvider),
   );

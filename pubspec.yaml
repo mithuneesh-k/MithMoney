@@ -64,6 +64,9 @@ dependencies:
   csv: ^6.0.0
   excel: ^4.0.5
 
+  # Home Screen Widgets
+  home_widget: ^0.7.0
+
   # Sensors for parallax
   sensors_plus: ^7.0.0
   flutter_timezone: ^5.0.2
