@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../core/theme/app_colors.dart';
 import '../../shared/providers/app_providers.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
@@ -174,7 +173,6 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   }
 
   Widget _buildLogo(BuildContext context, bool isDark) {
-    final accent = isDark ? DarkColors.accent : LightColors.accent;
     return Container(
       width: 100,
       height: 100,
@@ -182,8 +180,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
         color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(28),
       ),
-      child: const Center(
-        child: Icon(Icons.track_changes_rounded, size: 52, color: Colors.white),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(28),
+        child: Image.asset(
+          'assets/icon/app_icon.png',
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

@@ -143,7 +143,6 @@ class SmsInboxScreen extends ConsumerWidget {
             ],
           ),
         ),
-      ),
     );
   }
 

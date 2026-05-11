@@ -1,5 +1,5 @@
 name: mithmoney
-description: A production-grade expense tracking app with glassmorphism UI.
+description: Track every rupee. Own your future.
 publish_to: 'none'
 version: 1.1.0+2
 
@@ -71,10 +71,19 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   hive_generator: ^2.0.1
   build_runner: ^2.4.9
+  flutter_launcher_icons: ^0.14.3
 
 flutter:
   uses-material-design: true
-  # assets:
-  #   - assets/images/
-  #   - assets/lottie/
-  #   - assets/icons/
+  assets:
+    - assets/icon/
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/icon/app_icon.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "#1565C0"
+  adaptive_icon_foreground: "assets/icon/app_icon.png"
+  web:
+    generate: false

@@ -197,10 +197,12 @@ class _WelcomePage extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary,
               borderRadius: BorderRadius.circular(24),
             ),
-            child: const Icon(
-              Icons.track_changes_rounded,
-              size: 42,
-              color: Colors.white,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(24),
+              child: Image.asset(
+                'assets/icon/app_icon.png',
+                fit: BoxFit.cover,
+              ),
             ),
           ).animate().scale(
               begin: const Offset(0.4, 0.4),

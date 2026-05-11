@@ -135,12 +135,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                               width: 44,
                               height: 44,
                               decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    accent,
-                                    Theme.of(context).colorScheme.secondary,
-                                  ],
-                                ),
+                                color: accent,
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(Icons.person_rounded,
@@ -701,16 +696,7 @@ class _MiniBarChart extends StatelessWidget {
                       width: 18,
                       borderRadius:
                           const BorderRadius.vertical(top: Radius.circular(6)),
-                      gradient: LinearGradient(
-                        colors: isToday
-                            ? [accent.withValues(alpha: 0.8), accent]
-                            : [
-                                accent.withValues(alpha: 0.3),
-                                accent.withValues(alpha: 0.5),
-                              ],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                      ),
+                      color: isToday ? accent : accent.withValues(alpha: 0.4),
                     ),
                   ],
                 );

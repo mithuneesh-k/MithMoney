@@ -94,11 +94,11 @@ class _AppLockScreenState extends State<AppLockScreen> {
                       color: Theme.of(context).colorScheme.primary,
                       borderRadius: BorderRadius.circular(26),
                     ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.fingerprint_rounded,
-                        size: 48,
-                        color: Colors.white,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(26),
+                      child: Image.asset(
+                        'assets/icon/app_icon.png',
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ).animate().scale(

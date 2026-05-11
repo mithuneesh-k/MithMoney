@@ -160,20 +160,8 @@ class _BudgetProgressBarState extends State<BudgetProgressBar>
                     height: 8,
                     width: constraints.maxWidth * currentRatio,
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          currentColor.withValues(alpha: 0.8),
-                          currentColor,
-                        ],
-                      ),
+                      color: currentColor,
                       borderRadius: BorderRadius.circular(4),
-                      boxShadow: [
-                        BoxShadow(
-                          color: currentColor.withValues(alpha: 0.4),
-                          blurRadius: 6,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
                     ),
                   );
                 }),

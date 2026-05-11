@@ -497,15 +497,7 @@ class _TypeToggle extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isSelected ? t.color : Colors.transparent,
                   borderRadius: BorderRadius.circular(9),
-                  boxShadow: isSelected
-                      ? [
-                          BoxShadow(
-                            color: t.color.withValues(alpha: 0.35),
-                            blurRadius: 8,
-                            offset: const Offset(0, 3),
-                          )
-                        ]
-                      : [],
+                  boxShadow: const [],
                 ),
                 child: Text(
                   t.label,

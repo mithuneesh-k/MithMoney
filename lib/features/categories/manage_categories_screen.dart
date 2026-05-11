@@ -662,15 +662,7 @@ class _CategoryFormSheetState extends ConsumerState<_CategoryFormSheet> {
                                         : Colors.transparent,
                                     width: 2.5,
                                   ),
-                                  boxShadow: isSelected
-                                      ? [
-                                          BoxShadow(
-                                            color: color.withValues(alpha: 0.4),
-                                            blurRadius: 8,
-                                            offset: const Offset(0, 2),
-                                          )
-                                        ]
-                                      : [],
+                                   boxShadow: const [],
                                 ),
                                 child: isSelected
                                     ? const Icon(Icons.check_rounded,
