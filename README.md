@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/assets/logo.png" alt="MithMoney Logo" width="100" height="100" style="border-radius:22px"/>
+<img src="assets/icon/app_icon.png" alt="MithMoney Logo" width="100" height="100" style="border-radius:22px"/>
 
 # MithMoney
 
