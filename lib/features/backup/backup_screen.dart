@@ -1,4 +1,5 @@
-import 'dart:io';
+import 'dart:io' as io;
+import 'package:flutter/foundation.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -20,7 +21,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
   bool _isBackingUp = false;
   bool _isRestoring = false;
   String? _backupStatus;
-  List<FileSystemEntity> _backups = [];
+  List<io.FileSystemEntity> _backups = [];
 
   @override
   void initState() {

@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
+import 'dart:io' as io;
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import '../models/transaction_model.dart';
 import '../models/category_model.dart';
@@ -17,18 +18,21 @@ class BackupRepository {
 
   BackupRepository(this._txRepo, this._catRepo, this._settingsRepo);
 
-  Future<Directory> get _backupDir async {
+  Future<io.Directory?> get _backupDir async {
+    if (kIsWeb) return null;
     final base = await getExternalStorageDirectory() ??
         await getApplicationDocumentsDirectory();
-    final dir = Directory('${base.path}/$kBackupFolder');
+    final dir = io.Directory('${base.path}/$kBackupFolder');
     if (!await dir.exists()) await dir.create(recursive: true);
     return dir;
   }
 
   Future<String> createBackup() async {
+    if (kIsWeb) throw UnsupportedError('Backup not supported on Web');
     final dir = await _backupDir;
+    if (dir == null) throw Exception('Could not access backup directory');
     final fileName = AppFormatters.backupFileName();
-    final file = File('${dir.path}/$fileName');
+    final file = io.File('${dir.path}/$fileName');
 
     final transactions = _txRepo.getAll();
     final categories = _catRepo.getAll();
@@ -58,7 +62,8 @@ class BackupRepository {
   }
 
   Future<void> restoreFromFile(String filePath) async {
-    final file = File(filePath);
+    if (kIsWeb) throw UnsupportedError('Restore not supported on Web');
+    final file = io.File(filePath);
     final raw = await file.readAsString();
     final data = jsonDecode(raw) as Map<String, dynamic>;
 
@@ -87,11 +92,13 @@ class BackupRepository {
   }
 
   Future<String> exportToCsv() async {
+    if (kIsWeb) throw UnsupportedError('Export not supported on Web');
     final dir = await _backupDir;
+    if (dir == null) throw Exception('Could not access backup directory');
     final now = DateTime.now();
     final fileName =
         'transactions_${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}.csv';
-    final file = File('${dir.path}/$fileName');
+    final file = io.File('${dir.path}/$fileName');
 
     final transactions = _txRepo.getAll();
     final categories = _catRepo.getAll();
@@ -116,14 +123,17 @@ class BackupRepository {
     return file.path;
   }
 
-  Future<List<FileSystemEntity>> listBackups() async {
+  Future<List<io.FileSystemEntity>> listBackups() async {
+    if (kIsWeb) return [];
     final dir = await _backupDir;
+    if (dir == null) return [];
     final files = await dir.list().toList();
     files.sort((a, b) => b.path.compareTo(a.path));
     return files.where((f) => f.path.endsWith('.json')).toList();
   }
 
   Future<void> _pruneOldBackups(int retentionDays) async {
+    if (kIsWeb) return;
     final backups = await listBackups();
     if (backups.length > retentionDays) {
       final toDelete = backups.sublist(retentionDays);
@@ -134,7 +144,8 @@ class BackupRepository {
   }
 
   Future<void> deleteBackup(String path) async {
-    final file = File(path);
+    if (kIsWeb) return;
+    final file = io.File(path);
     if (await file.exists()) await file.delete();
   }
 }

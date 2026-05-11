@@ -9,6 +9,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/utils/app_logger.dart';
 import '../../data/models/transaction_model.dart';
 import '../../data/models/category_model.dart';
+import '../../data/models/account_model.dart';
 import '../../shared/providers/app_providers.dart';
 import '../../shared/widgets/glass_card.dart';
 import '../categories/manage_categories_screen.dart';

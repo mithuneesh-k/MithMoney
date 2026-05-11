@@ -35,8 +35,8 @@ class AppTheme {
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: DarkColors.backgroundStart,
-        indicatorColor: DarkColors.accent.withOpacity(0.2),
-        labelTextStyle: MaterialStateProperty.all(
+        indicatorColor: DarkColors.accent.withValues(alpha: 0.2),
+        labelTextStyle: WidgetStateProperty.all(
           GoogleFonts.plusJakartaSans(
             fontSize: 12,
             fontWeight: FontWeight.w600,
@@ -113,8 +113,8 @@ class AppTheme {
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: Colors.white,
-        indicatorColor: LightColors.accent.withOpacity(0.15),
-        labelTextStyle: MaterialStateProperty.all(
+        indicatorColor: LightColors.accent.withValues(alpha: 0.15),
+        labelTextStyle: WidgetStateProperty.all(
           GoogleFonts.plusJakartaSans(
             fontSize: 12,
             fontWeight: FontWeight.w600,
@@ -136,7 +136,7 @@ class AppTheme {
         ),
       ),
       inputDecorationTheme: _buildInputTheme(
-        LightColors.backgroundEnd.withOpacity(0.5),
+        LightColors.backgroundEnd.withValues(alpha: 0.5),
         LightColors.divider,
         LightColors.textPrimary,
         LightColors.textSecondary,
@@ -157,7 +157,7 @@ class AppTheme {
         surfaceTintColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: Colors.white,
         elevation: 0,
         shape: RoundedRectangleBorder(

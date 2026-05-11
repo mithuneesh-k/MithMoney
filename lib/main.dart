@@ -91,7 +91,7 @@ void main() async {
       name: 'Cash',
       type: AccountType.cash,
       balance: 0.0,
-      colorValue: Colors.blue.value,
+      colorValue: Colors.blue.toARGB32(),
       iconCode: Icons.payments_outlined.codePoint,
       createdAt: DateTime.now(),
     );

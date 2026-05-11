@@ -38,7 +38,7 @@ class ManageAccountsScreen extends ConsumerWidget {
                     width: 48,
                     height: 48,
                     decoration: BoxDecoration(
-                      color: account.color.withOpacity(0.1),
+                      color: account.color.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(account.icon, color: account.color),
@@ -60,7 +60,7 @@ class ManageAccountsScreen extends ConsumerWidget {
                           style: GoogleFonts.plusJakartaSans(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
                           ),
                         ),
                       ],
@@ -241,7 +241,7 @@ class _AccountDialogState extends ConsumerState<_AccountDialog> {
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: _selectedIcon == icon ? _selectedColor.withOpacity(0.2) : null,
+                    color: _selectedIcon == icon ? _selectedColor.withValues(alpha: 0.2) : null,
                     borderRadius: BorderRadius.circular(8),
                     border: _selectedIcon == icon ? Border.all(color: _selectedColor) : null,
                   ),
@@ -262,7 +262,7 @@ class _AccountDialogState extends ConsumerState<_AccountDialog> {
               name: _nameController.text,
               type: _selectedType,
               balance: double.tryParse(_balanceController.text) ?? 0,
-              colorValue: _selectedColor.value,
+              colorValue: _selectedColor.toARGB32(),
               iconCode: _selectedIcon.codePoint,
               createdAt: widget.account?.createdAt ?? DateTime.now(),
             );

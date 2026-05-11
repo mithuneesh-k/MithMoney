@@ -162,9 +162,10 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                               return TransactionTile(
                                 transaction: tx,
                                 category: catMap[tx.categoryId],
+                                account: ref.watch(accountProvider).firstWhere((a) => a.id == tx.accountId, orElse: () => ref.watch(accountProvider).first),
                                 currencySymbol: symbol,
                                 animationIndex: e.key,
-                                onDelete: () => _delete(context, tx.id),
+                                onDelete: () => _delete(context, tx),
                                 onEdit: () => _edit(tx),
                               );
                             }),
@@ -196,8 +197,8 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
     }).toList();
   }
 
-  Future<void> _delete(BuildContext context, String id) async {
-    await ref.read(transactionProvider.notifier).delete(id);
+  Future<void> _delete(BuildContext context, TransactionModel tx) async {
+    await ref.read(transactionProvider.notifier).delete(tx);
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Transaction deleted')),

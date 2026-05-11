@@ -40,7 +40,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final transactions = ref.watch(transactionProvider);
     final settings = ref.watch(settingsProvider);
     final categories = ref.watch(categoryProvider);
     final symbol = settings.currencySymbol;
