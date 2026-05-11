@@ -90,6 +90,41 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
     }
   }
 
+  Future<void> _importData() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['csv', 'xlsx'],
+    );
+    if (result == null || result.files.single.path == null) return;
+
+    final path = result.files.single.path!;
+    final extension = path.split('.').last.toLowerCase();
+
+    setState(() => _isRestoring = true);
+    try {
+      int count = 0;
+      if (extension == 'csv') {
+        count = await ref.read(importRepoProvider).importFromCsv(path);
+      } else if (extension == 'xlsx') {
+        count = await ref.read(importRepoProvider).importFromExcel(path);
+      }
+
+      ref.read(transactionProvider.notifier).refresh();
+      ref.read(accountProvider.notifier).refresh();
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text('✅ Successfully imported $count transactions!')),
+        );
+      }
+    } catch (e) {
+      _showError('Import failed: $e');
+    } finally {
+      if (mounted) setState(() => _isRestoring = false);
+    }
+  }
+
   Future<bool> _confirmRestore() async {
     final result = await showDialog<bool>(
       context: context,
@@ -300,6 +335,68 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
                   ),
                 ),
               ).animate(delay: 100.ms).fadeIn(duration: 400.ms),
+            ),
+
+            // Import card
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+                child: AppCard(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            width: 44,
+                            height: 44,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFF9F43)
+                                  .withValues(alpha: 0.15),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Icon(Icons.upload_file_rounded,
+                                color: Color(0xFFFF9F43)),
+                          ),
+                          const SizedBox(width: 12),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Import Transactions',
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              Text(
+                                'Import from CSV or XLSX',
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 12,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurface
+                                      .withValues(alpha: 0.5),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: _isRestoring ? null : _importData,
+                          icon: const Icon(Icons.file_open_rounded),
+                          label: const Text('Choose CSV/XLSX File'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ).animate(delay: 150.ms).fadeIn(duration: 400.ms),
             ),
 
             // Backup history

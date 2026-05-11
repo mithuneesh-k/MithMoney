@@ -11,6 +11,7 @@ import '../../data/models/category_model.dart';
 import '../../data/models/account_model.dart';
 import '../../data/models/bank_sms_message.dart';
 import '../../data/repositories/account_repository.dart';
+import '../../data/repositories/import_repository.dart';
 import '../../features/sms/sms_service.dart';
 
 // ─── Repository Providers ─────────────────────────────────────────────────────
@@ -35,6 +36,14 @@ final backupRepoProvider = Provider<BackupRepository>((ref) {
     ref.watch(transactionRepoProvider),
     ref.watch(categoryRepoProvider),
     ref.watch(settingsRepoProvider),
+  );
+});
+
+final importRepoProvider = Provider<ImportRepository>((ref) {
+  return ImportRepository(
+    ref.watch(transactionRepoProvider),
+    ref.watch(categoryRepoProvider),
+    ref.watch(accountRepoProvider),
   );
 });
 
