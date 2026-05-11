@@ -171,8 +171,15 @@ Contributions are very welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) f
 ## Roadmap
 
 - [ ] Recurring / scheduled transactions
-- [ ] CSV export
-- [ ] Widgets (home screen balance widget)
+- [x] CSV / XLSX Import & Export
+- [x] Home Screen Widgets (Live Balance & Quick Add)
+- [ ] Natural Language Processing (NLP) for quick expense entry (e.g., "20rs for auto")
+- [ ] Receipt OCR (AI Scanner) for automated bill logging
+- [ ] Debt & Loan Manager (track who owes you and who you owe)
+- [ ] PDF Financial Reports (branded monthly summaries)
+- [ ] Savings Goals with visual progress tracking
+- [ ] Split-the-Bill integration
+- [ ] Voice-to-Expense input
 - [ ] iOS support
 - [ ] UPI deep link detection
 - [ ] Multi-account support
