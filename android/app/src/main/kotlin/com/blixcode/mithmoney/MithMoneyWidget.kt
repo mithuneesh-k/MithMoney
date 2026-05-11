@@ -8,6 +8,7 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.RemoteViews
 import es.antonborri.home_widget.HomeWidgetProvider
+import es.antonborri.home_widget.HomeWidgetLaunchIntent
 
 class MithMoneyWidget : HomeWidgetProvider() {
     override fun onUpdate(
@@ -33,11 +34,19 @@ class MithMoneyWidget : HomeWidgetProvider() {
                 }
 
                 // Intent to open the app
-                val pendingIntent = HomeWidgetProvider.getPendingIntent(context, Uri.parse("mithmoney://add_expense"))
+                val pendingIntent = HomeWidgetLaunchIntent.getActivity(
+                    context, 
+                    MainActivity::class.java, 
+                    Uri.parse("mithmoney://add_expense")
+                )
                 setOnClickPendingIntent(R.id.add_expense, pendingIntent)
                 
                 // Also open app when clicking balance
-                val openAppIntent = HomeWidgetProvider.getPendingIntent(context, Uri.parse("mithmoney://home"))
+                val openAppIntent = HomeWidgetLaunchIntent.getActivity(
+                    context, 
+                    MainActivity::class.java, 
+                    Uri.parse("mithmoney://home")
+                )
                 setOnClickPendingIntent(R.id.total_balance, openAppIntent)
             }
 
