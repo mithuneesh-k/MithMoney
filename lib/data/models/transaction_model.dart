@@ -45,6 +45,9 @@ class TransactionModel extends HiveObject {
   @HiveField(9)
   String? smsSource;
 
+  @HiveField(12)
+  String? accountId;
+
   @HiveField(10)
   DateTime createdAt;
 
@@ -62,6 +65,7 @@ class TransactionModel extends HiveObject {
     this.receiptImagePath,
     this.isFromSms = false,
     this.smsSource,
+    this.accountId,
     required this.createdAt,
     required this.updatedAt,
   }) : tags = tags ?? [];
@@ -77,6 +81,7 @@ class TransactionModel extends HiveObject {
     String? receiptImagePath,
     bool? isFromSms,
     String? smsSource,
+    String? accountId,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -91,6 +96,7 @@ class TransactionModel extends HiveObject {
       receiptImagePath: receiptImagePath ?? this.receiptImagePath,
       isFromSms: isFromSms ?? this.isFromSms,
       smsSource: smsSource ?? this.smsSource,
+      accountId: accountId ?? this.accountId,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? DateTime.now(),
     );
@@ -107,6 +113,7 @@ class TransactionModel extends HiveObject {
         'receiptImagePath': receiptImagePath,
         'isFromSms': isFromSms,
         'smsSource': smsSource,
+        'accountId': accountId,
         'createdAt': createdAt.toIso8601String(),
         'updatedAt': updatedAt.toIso8601String(),
       };
@@ -126,6 +133,7 @@ class TransactionModel extends HiveObject {
       receiptImagePath: json['receiptImagePath'] as String?,
       isFromSms: json['isFromSms'] as bool? ?? false,
       smsSource: json['smsSource'] as String?,
+      accountId: json['accountId'] as String?,
       createdAt: DateTime.parse(json['createdAt'] as String),
       updatedAt: DateTime.parse(json['updatedAt'] as String),
     );

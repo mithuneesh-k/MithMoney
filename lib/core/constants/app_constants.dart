@@ -6,6 +6,7 @@ const String kCategoriesBox = 'categories';
 const String kSmsMessagesBox = 'sms_messages';
 const String kSettingsBox = 'settings';
 const String kTipsFavoritesBox = 'tips_favorites';
+const String kAccountsBox = 'accounts';
 
 // ─── Hive Type IDs ────────────────────────────────────────────────────────────
 const int kTransactionTypeId = 0;
@@ -15,6 +16,8 @@ const int kAppSettingsTypeId = 3;
 const int kTransactionTypeEnumId = 4;
 const int kSmsStatusEnumId = 5;
 const int kCategoryTypeEnumId = 6;
+const int kAccountTypeId = 7;
+const int kAccountTypeEnumId = 8;
 
 // ─── Animation Constants ──────────────────────────────────────────────────────
 const SpringDescription kSpringFast =

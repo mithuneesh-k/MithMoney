@@ -10,6 +10,7 @@ import 'data/models/transaction_model.dart';
 import 'data/models/category_model.dart';
 import 'data/models/bank_sms_message.dart';
 import 'data/models/app_settings.dart';
+import 'data/models/account_model.dart';
 import 'core/constants/app_constants.dart';
 import 'features/splash/splash_screen.dart';
 import 'features/onboarding/onboarding_screen.dart';
@@ -57,6 +58,12 @@ void main() async {
   if (!Hive.isAdapterRegistered(kAppSettingsTypeId)) {
     Hive.registerAdapter(AppSettingsAdapter());
   }
+  if (!Hive.isAdapterRegistered(kAccountTypeEnumId)) {
+    Hive.registerAdapter(AccountTypeAdapter());
+  }
+  if (!Hive.isAdapterRegistered(kAccountTypeId)) {
+    Hive.registerAdapter(AccountModelAdapter());
+  }
 
   // Open boxes
   await Future.wait([
@@ -65,6 +72,7 @@ void main() async {
     Hive.openBox<BankSmsMessage>(kSmsMessagesBox),
     Hive.openBox<AppSettings>(kSettingsBox),
     Hive.openBox<bool>(kTipsFavoritesBox),
+    Hive.openBox<AccountModel>(kAccountsBox),
   ]);
 
   // Seed default categories if box is empty
@@ -73,6 +81,21 @@ void main() async {
     for (final cat in defaultCategories) {
       await catBox.put(cat.id, cat);
     }
+  }
+
+  // Seed default account if box is empty
+  final accBox = Hive.box<AccountModel>(kAccountsBox);
+  if (accBox.isEmpty) {
+    final defaultAccount = AccountModel(
+      id: 'default_cash',
+      name: 'Cash',
+      type: AccountType.cash,
+      balance: 0.0,
+      colorValue: Colors.blue.value,
+      iconCode: Icons.payments_outlined.codePoint,
+      createdAt: DateTime.now(),
+    );
+    await accBox.put(defaultAccount.id, defaultAccount);
   }
 
   // Initialize notification service

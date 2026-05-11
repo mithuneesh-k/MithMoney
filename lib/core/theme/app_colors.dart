@@ -19,19 +19,19 @@ class DarkColors {
 
 // ─── Light Mode Colors ────────────────────────────────────────────────────────
 class LightColors {
-  static const Color backgroundStart = Color(0xFFF0F4FF);
-  static const Color backgroundEnd = Color(0xFFE8EEFF);
-  static const Color accent = Color(0xFF5B52F0);
-  static const Color accentSecondary = Color(0xFF3DB8F5);
-  static const Color incomeGreen = Color(0xFF00B87C);
-  static const Color expenseRed = Color(0xFFE8365D);
-  static const Color textPrimary = Color(0xFF1A1A2E);
-  static const Color textSecondary = Color(0x991A1A2E);
-  static const Color glassSurface = Color(0xA6FFFFFF);
-  static const Color glassBorder = Color(0x33FFFFFF);
+  static const Color backgroundStart = Color(0xFFFFFFFF);
+  static const Color backgroundEnd = Color(0xFFF0F7FF);
+  static const Color accent = Color(0xFF0061A4);
+  static const Color accentSecondary = Color(0xFF3B608E);
+  static const Color incomeGreen = Color(0xFF006D46);
+  static const Color expenseRed = Color(0xFFBA1A1A);
+  static const Color textPrimary = Color(0xFF191C1E);
+  static const Color textSecondary = Color(0xFF41484D);
+  static const Color glassSurface = Color(0xCCFFFFFF);
+  static const Color glassBorder = Color(0x330061A4);
   static const Color cardSurface = Color(0xFFFFFFFF);
-  static const Color divider = Color(0x1A1A1A2E);
-  static const Color transferColor = Color(0xFFFF8C00);
+  static const Color divider = Color(0xFFDDE3EA);
+  static const Color transferColor = Color(0xFF904D00);
 }
 
 // ─── Category Colors ──────────────────────────────────────────────────────────

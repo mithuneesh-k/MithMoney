@@ -27,6 +27,7 @@ class TransactionModelAdapter extends TypeAdapter<TransactionModel> {
       receiptImagePath: fields[7] as String?,
       isFromSms: fields[8] as bool,
       smsSource: fields[9] as String?,
+      accountId: fields[12] as String?,
       createdAt: fields[10] as DateTime,
       updatedAt: fields[11] as DateTime,
     );
@@ -35,7 +36,7 @@ class TransactionModelAdapter extends TypeAdapter<TransactionModel> {
   @override
   void write(BinaryWriter writer, TransactionModel obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -56,6 +57,8 @@ class TransactionModelAdapter extends TypeAdapter<TransactionModel> {
       ..write(obj.isFromSms)
       ..writeByte(9)
       ..write(obj.smsSource)
+      ..writeByte(12)
+      ..write(obj.accountId)
       ..writeByte(10)
       ..write(obj.createdAt)
       ..writeByte(11)

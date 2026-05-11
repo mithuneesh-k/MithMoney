@@ -5,10 +5,12 @@ import '../../data/models/transaction_model.dart';
 import '../../data/models/category_model.dart';
 import '../../core/utils/formatters.dart';
 import '../../core/theme/app_colors.dart';
+import '../../data/models/account_model.dart';
 
 class TransactionTile extends StatelessWidget {
   final TransactionModel transaction;
   final CategoryModel? category;
+  final AccountModel? account;
   final String currencySymbol;
   final VoidCallback? onTap;
   final VoidCallback? onDelete;
@@ -19,6 +21,7 @@ class TransactionTile extends StatelessWidget {
     super.key,
     required this.transaction,
     this.category,
+    this.account,
     this.currencySymbol = '₹',
     this.onTap,
     this.onDelete,
@@ -140,6 +143,23 @@ class TransactionTile extends StatelessWidget {
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                    if (account != null) ...[
+                      const SizedBox(height: 2),
+                      Row(
+                        children: [
+                          Icon(account!.icon, size: 10, color: account!.color),
+                          const SizedBox(width: 4),
+                          Text(
+                            account!.name,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w600,
+                              color: account!.color,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ],

@@ -8,7 +8,9 @@ import '../../data/repositories/sms_repository.dart';
 import '../../data/models/app_settings.dart';
 import '../../data/models/transaction_model.dart';
 import '../../data/models/category_model.dart';
+import '../../data/models/account_model.dart';
 import '../../data/models/bank_sms_message.dart';
+import '../../data/repositories/account_repository.dart';
 import '../../features/sms/sms_service.dart';
 
 // ─── Repository Providers ─────────────────────────────────────────────────────
@@ -22,6 +24,10 @@ final categoryRepoProvider = Provider<CategoryRepository>((ref) {
 
 final settingsRepoProvider = Provider<SettingsRepository>((ref) {
   return SettingsRepository();
+});
+
+final accountRepoProvider = Provider<AccountRepository>((ref) {
+  return AccountRepository();
 });
 
 final backupRepoProvider = Provider<BackupRepository>((ref) {
@@ -133,8 +139,9 @@ final settingsProvider =
 // ─── Transaction Providers ────────────────────────────────────────────────────
 class TransactionNotifier extends StateNotifier<List<TransactionModel>> {
   final TransactionRepository _repo;
+  final AccountRepository? _accountRepo;
 
-  TransactionNotifier(this._repo) : super(_repo.getAll());
+  TransactionNotifier(this._repo, [this._accountRepo]) : super(_repo.getAll());
 
   void refresh() {
     state = _repo.getAll();
@@ -144,36 +151,59 @@ class TransactionNotifier extends StateNotifier<List<TransactionModel>> {
     try {
       AppLogger.i('TransactionNotifier', 'Adding transaction id=${tx.id}');
       await _repo.add(tx);
+      
+      // Update account balance
+      if (_accountRepo != null && tx.accountId != null) {
+        final factor = tx.type == TransactionType.income ? 1.0 : -1.0;
+        await _accountRepo!.updateBalance(tx.accountId!, tx.amount * factor);
+      }
+      
       refresh();
-      AppLogger.i(
-          'TransactionNotifier', 'Transaction added, total=${state.length}');
     } catch (e, stack) {
-      AppLogger.e('TransactionNotifier',
-          'Failed to add transaction id=${tx.id}', e, stack);
+      AppLogger.e('TransactionNotifier', 'Failed to add transaction', e, stack);
       rethrow;
     }
   }
 
-  Future<void> update(TransactionModel tx) async {
+  Future<void> update(TransactionModel oldTx, TransactionModel newTx) async {
     try {
-      AppLogger.i('TransactionNotifier', 'Updating transaction id=${tx.id}');
-      await _repo.update(tx);
+      AppLogger.i('TransactionNotifier', 'Updating transaction id=${newTx.id}');
+      
+      // Revert old account balance
+      if (_accountRepo != null && oldTx.accountId != null) {
+        final oldFactor = oldTx.type == TransactionType.income ? -1.0 : 1.0;
+        await _accountRepo!.updateBalance(oldTx.accountId!, oldTx.amount * oldFactor);
+      }
+      
+      await _repo.update(newTx);
+      
+      // Apply new account balance
+      if (_accountRepo != null && newTx.accountId != null) {
+        final newFactor = newTx.type == TransactionType.income ? 1.0 : -1.0;
+        await _accountRepo!.updateBalance(newTx.accountId!, newTx.amount * newFactor);
+      }
+      
       refresh();
     } catch (e, stack) {
-      AppLogger.e('TransactionNotifier',
-          'Failed to update transaction id=${tx.id}', e, stack);
+      AppLogger.e('TransactionNotifier', 'Failed to update transaction', e, stack);
       rethrow;
     }
   }
 
-  Future<void> delete(String id) async {
+  Future<void> delete(TransactionModel tx) async {
     try {
-      AppLogger.i('TransactionNotifier', 'Deleting transaction id=$id');
-      await _repo.delete(id);
+      AppLogger.i('TransactionNotifier', 'Deleting transaction id=${tx.id}');
+      
+      // Revert account balance
+      if (_accountRepo != null && tx.accountId != null) {
+        final factor = tx.type == TransactionType.income ? -1.0 : 1.0;
+        await _accountRepo!.updateBalance(tx.accountId!, tx.amount * factor);
+      }
+      
+      await _repo.delete(tx.id);
       refresh();
     } catch (e, stack) {
-      AppLogger.e('TransactionNotifier', 'Failed to delete transaction id=$id',
-          e, stack);
+      AppLogger.e('TransactionNotifier', 'Failed to delete transaction', e, stack);
       rethrow;
     }
   }
@@ -204,7 +234,51 @@ class TransactionNotifier extends StateNotifier<List<TransactionModel>> {
 
 final transactionProvider =
     StateNotifierProvider<TransactionNotifier, List<TransactionModel>>((ref) {
-  return TransactionNotifier(ref.watch(transactionRepoProvider));
+  return TransactionNotifier(
+    ref.watch(transactionRepoProvider),
+    ref.watch(accountRepoProvider),
+  );
+});
+
+// ─── Account Providers ────────────────────────────────────────────────────────
+class AccountNotifier extends StateNotifier<List<AccountModel>> {
+  final AccountRepository _repo;
+
+  AccountNotifier(this._repo) : super(_repo.getAll());
+
+  void refresh() {
+    state = _repo.getAll();
+  }
+
+  Future<void> add(AccountModel acc) async {
+    await _repo.add(acc);
+    refresh();
+  }
+
+  Future<void> update(AccountModel acc) async {
+    await _repo.update(acc);
+    refresh();
+  }
+
+  Future<void> delete(String id) async {
+    await _repo.delete(id);
+    refresh();
+  }
+
+  AccountModel? getById(String id) => _repo.getById(id);
+}
+
+final accountProvider =
+    StateNotifierProvider<AccountNotifier, List<AccountModel>>((ref) {
+  return AccountNotifier(ref.watch(accountRepoProvider));
+});
+
+final selectedAccountIdProvider = StateProvider<String?>((ref) => null);
+
+final selectedAccountProvider = Provider<AccountModel?>((ref) {
+  final id = ref.watch(selectedAccountIdProvider);
+  if (id == null) return null;
+  return ref.watch(accountProvider).firstWhere((a) => a.id == id);
 });
 
 // ─── Category Providers ───────────────────────────────────────────────────────
@@ -290,12 +364,14 @@ final filteredTransactionsProvider = Provider<List<TransactionModel>>((ref) {
   final all = ref.watch(transactionProvider);
   final search = ref.watch(transactionSearchProvider).toLowerCase();
   final typeFilter = ref.watch(transactionTypeFilterProvider);
+  final accountId = ref.watch(selectedAccountIdProvider);
 
   return all.where((t) {
     final matchesSearch = search.isEmpty ||
         t.note.toLowerCase().contains(search) ||
         t.tags.any((tag) => tag.toLowerCase().contains(search));
     final matchesType = typeFilter == null || t.type == typeFilter;
-    return matchesSearch && matchesType;
+    final matchesAccount = accountId == null || t.accountId == accountId;
+    return matchesSearch && matchesType && matchesAccount;
   }).toList();
 });

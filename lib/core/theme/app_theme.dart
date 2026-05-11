@@ -6,23 +6,25 @@ import 'app_colors.dart';
 class AppTheme {
   // ─── Dark Theme ─────────────────────────────────────────────────────────────
   static ThemeData dark() {
-    final base = ThemeData.dark();
-    return base.copyWith(
-      scaffoldBackgroundColor: DarkColors.backgroundStart,
-      colorScheme: const ColorScheme.dark(
+    return ThemeData(
+      useMaterial3: true,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: DarkColors.accent,
+        brightness: Brightness.dark,
         primary: DarkColors.accent,
+        onPrimary: Colors.white,
         secondary: DarkColors.accentSecondary,
         surface: DarkColors.cardSurface,
+        background: DarkColors.backgroundStart,
         error: DarkColors.expenseRed,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onSurface: DarkColors.textPrimary,
       ),
+      scaffoldBackgroundColor: DarkColors.backgroundStart,
       textTheme:
           _buildTextTheme(DarkColors.textPrimary, DarkColors.textSecondary),
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        scrolledUnderElevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle.light,
         titleTextStyle: GoogleFonts.plusJakartaSans(
           color: DarkColors.textPrimary,
@@ -31,12 +33,24 @@ class AppTheme {
         ),
         iconTheme: const IconThemeData(color: DarkColors.textPrimary),
       ),
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: DarkColors.backgroundStart,
+        indicatorColor: DarkColors.accent.withOpacity(0.2),
+        labelTextStyle: MaterialStateProperty.all(
+          GoogleFonts.plusJakartaSans(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: DarkColors.textPrimary,
+          ),
+        ),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: DarkColors.accent,
           foregroundColor: Colors.white,
+          elevation: 0,
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           textStyle: GoogleFonts.plusJakartaSans(
             fontWeight: FontWeight.w700,
@@ -45,55 +59,50 @@ class AppTheme {
         ),
       ),
       inputDecorationTheme: _buildInputTheme(
-        DarkColors.glassSurface,
-        DarkColors.glassBorder,
+        DarkColors.cardSurface,
+        DarkColors.divider,
         DarkColors.textPrimary,
         DarkColors.textSecondary,
         DarkColors.accent,
       ),
-      dividerTheme: const DividerThemeData(color: DarkColors.divider, space: 1),
+      dividerTheme: const DividerThemeData(color: DarkColors.divider, thickness: 1),
       bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: Color(0xFF0F1428),
-        modalBackgroundColor: Color(0xFF0F1428),
+        backgroundColor: Color(0xFF1A1F3A),
+        modalBackgroundColor: Color(0xFF1A1F3A),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
         ),
       ),
       dialogTheme: DialogThemeData(
         backgroundColor: const Color(0xFF1A1F3A),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      ),
-      snackBarTheme: SnackBarThemeData(
-        backgroundColor: const Color(0xFF1A1F3A),
-        contentTextStyle: GoogleFonts.plusJakartaSans(
-          color: DarkColors.textPrimary,
-          fontSize: 14,
-        ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        behavior: SnackBarBehavior.floating,
+        surfaceTintColor: const Color(0xFF1A1F3A),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
       ),
     );
   }
 
   // ─── Light Theme ────────────────────────────────────────────────────────────
   static ThemeData light() {
-    final base = ThemeData.light();
-    return base.copyWith(
-      scaffoldBackgroundColor: LightColors.backgroundStart,
-      colorScheme: const ColorScheme.light(
+    return ThemeData(
+      useMaterial3: true,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: LightColors.accent,
+        brightness: Brightness.light,
         primary: LightColors.accent,
+        onPrimary: Colors.white,
         secondary: LightColors.accentSecondary,
         surface: LightColors.cardSurface,
+        background: LightColors.backgroundStart,
         error: LightColors.expenseRed,
-        onPrimary: Colors.white,
-        onSecondary: Colors.white,
-        onSurface: LightColors.textPrimary,
       ),
+      scaffoldBackgroundColor: LightColors.backgroundStart,
       textTheme:
           _buildTextTheme(LightColors.textPrimary, LightColors.textSecondary),
       appBarTheme: AppBarTheme(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
+        centerTitle: false,
         elevation: 0,
+        scrolledUnderElevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         titleTextStyle: GoogleFonts.plusJakartaSans(
           color: LightColors.textPrimary,
@@ -102,12 +111,23 @@ class AppTheme {
         ),
         iconTheme: const IconThemeData(color: LightColors.textPrimary),
       ),
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: Colors.white,
+        indicatorColor: LightColors.accent.withOpacity(0.15),
+        labelTextStyle: MaterialStateProperty.all(
+          GoogleFonts.plusJakartaSans(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: LightColors.accent,
           foregroundColor: Colors.white,
+          elevation: 0,
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
           textStyle: GoogleFonts.plusJakartaSans(
             fontWeight: FontWeight.w700,
@@ -116,33 +136,34 @@ class AppTheme {
         ),
       ),
       inputDecorationTheme: _buildInputTheme(
-        LightColors.glassSurface,
-        LightColors.glassBorder,
+        LightColors.backgroundEnd.withOpacity(0.5),
+        LightColors.divider,
         LightColors.textPrimary,
         LightColors.textSecondary,
         LightColors.accent,
       ),
       dividerTheme:
-          const DividerThemeData(color: LightColors.divider, space: 1),
+          const DividerThemeData(color: LightColors.divider, thickness: 1),
       bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: Color(0xFFF8FAFF),
-        modalBackgroundColor: Color(0xFFF8FAFF),
+        backgroundColor: Colors.white,
+        modalBackgroundColor: Colors.white,
+        elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
         ),
       ),
       dialogTheme: DialogThemeData(
         backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        surfaceTintColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
       ),
-      snackBarTheme: SnackBarThemeData(
-        backgroundColor: Colors.white,
-        contentTextStyle: GoogleFonts.plusJakartaSans(
-          color: LightColors.textPrimary,
-          fontSize: 14,
+      cardTheme: CardTheme(
+        color: Colors.white,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: const BorderSide(color: LightColors.divider, width: 1),
         ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        behavior: SnackBarBehavior.floating,
       ),
     );
   }

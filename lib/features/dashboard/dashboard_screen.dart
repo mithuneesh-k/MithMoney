@@ -47,10 +47,27 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
     final catMap = {for (final c in categories) c.id: c};
     final txNotifier = ref.read(transactionProvider.notifier);
-    final recent = transactions.take(5).toList();
-    final monthlyIncome = txNotifier.thisMonthIncome;
-    final monthlyExpense = txNotifier.thisMonthExpense;
-    final balance = monthlyIncome - monthlyExpense;
+    final selectedAcc = ref.watch(selectedAccountProvider);
+    final recent = ref.watch(filteredTransactionsProvider).take(5).toList();
+    
+    // Calculate balances based on filter
+    double balance, monthlyIncome, monthlyExpense;
+    if (selectedAcc != null) {
+      balance = selectedAcc.balance;
+      // We still need this month's stats for the cards
+      final thisMonthTxs = ref.watch(filteredTransactionsProvider).where((t) {
+        final now = DateTime.now();
+        return t.date.month == now.month && t.date.year == now.year;
+      }).toList();
+      monthlyIncome = thisMonthTxs.where((t) => t.type == TransactionType.income).fold(0, (sum, t) => sum + t.amount);
+      monthlyExpense = thisMonthTxs.where((t) => t.type == TransactionType.expense).fold(0, (sum, t) => sum + t.amount);
+    } else {
+      monthlyIncome = txNotifier.thisMonthIncome;
+      monthlyExpense = txNotifier.thisMonthExpense;
+      balance = monthlyIncome - monthlyExpense; // or total balance across all accounts?
+      // Let's use sum of all accounts for total balance
+      balance = ref.watch(accountProvider).fold(0, (sum, a) => sum + a.balance);
+    }
     final budgetRatio =
         settings.monthlyBudget != null && settings.monthlyBudget! > 0
             ? (monthlyExpense / settings.monthlyBudget!).clamp(0.0, 1.0)
@@ -143,11 +160,68 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                             ),
                         ],
                       ),
-                    ).animate(delay: 0.ms).fadeIn(duration: 400.ms).slideY(
-                        begin: -0.3,
-                        end: 0,
-                        duration: 400.ms,
-                        curve: Curves.easeOutExpo),
+                    ).animate(delay: 0.ms).fadeIn(duration: 400.ms),
+                    
+                    // Account Filter / Balance list
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      height: 54,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        itemCount: ref.watch(accountProvider).length + 1,
+                        itemBuilder: (ctx, i) {
+                          if (i == 0) {
+                            final isAll = ref.watch(selectedAccountIdProvider) == null;
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 12),
+                              child: ChoiceChip(
+                                label: const Text('All Accounts'),
+                                selected: isAll,
+                                onSelected: (val) => ref.read(selectedAccountIdProvider.notifier).state = null,
+                                labelStyle: GoogleFonts.plusJakartaSans(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                  color: isAll ? Colors.white : Theme.of(context).colorScheme.onSurface,
+                                ),
+                                selectedColor: accent,
+                                backgroundColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.05),
+                                side: BorderSide.none,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                                showCheckmark: false,
+                              ),
+                            );
+                          }
+                          final acc = ref.watch(accountProvider)[i - 1];
+                          final isSelected = ref.watch(selectedAccountIdProvider) == acc.id;
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 12),
+                            child: ChoiceChip(
+                              label: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(acc.icon, size: 14, color: isSelected ? Colors.white : acc.color),
+                                  const SizedBox(width: 8),
+                                  Text(acc.name),
+                                ],
+                              ),
+                              selected: isSelected,
+                              onSelected: (val) => ref.read(selectedAccountIdProvider.notifier).state = val ? acc.id : null,
+                              labelStyle: GoogleFonts.plusJakartaSans(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: isSelected ? Colors.white : Theme.of(context).colorScheme.onSurface,
+                              ),
+                              selectedColor: accent,
+                              backgroundColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.05),
+                              side: BorderSide.none,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                              showCheckmark: false,
+                            ),
+                          );
+                        },
+                      ),
+                    ).animate(delay: 50.ms).fadeIn(duration: 400.ms),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
                       child: _BalanceCard(
@@ -214,10 +288,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   return TransactionTile(
                     transaction: tx,
                     category: catMap[tx.categoryId],
+                    account: ref.watch(accountProvider).firstWhere((a) => a.id == tx.accountId, orElse: () => ref.watch(accountProvider).first),
                     currencySymbol: symbol,
                     animationIndex: i,
                     onTap: () => _showDetail(context, tx),
-                    onDelete: () => _deleteTransaction(tx.id),
+                    onDelete: () => _deleteTransaction(tx),
                     onEdit: () => _editTransaction(tx),
                   );
                 },
@@ -255,8 +330,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     );
   }
 
-  Future<void> _deleteTransaction(String id) async {
-    await ref.read(transactionProvider.notifier).delete(id);
+  Future<void> _deleteTransaction(TransactionModel tx) async {
+    await ref.read(transactionProvider.notifier).delete(tx);
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

@@ -30,6 +30,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
   late TextEditingController _noteController;
   late TextEditingController _tagsController;
   String? _selectedCategoryId;
+  String? _selectedAccountId;
   DateTime _selectedDate = DateTime.now();
   String? _receiptImagePath;
   bool _isSaving = false;
@@ -50,6 +51,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
     _noteController = TextEditingController(text: ex?.note ?? '');
     _tagsController = TextEditingController(text: ex?.tags.join(', ') ?? '');
     _selectedCategoryId = ex?.categoryId;
+    _selectedAccountId = ex?.accountId;
     _selectedDate = ex?.date ?? DateTime.now();
 
     _saveButtonController = AnimationController(
@@ -106,6 +108,10 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
       _showError('Please select a category');
       return;
     }
+    if (_selectedAccountId == null) {
+      _showError('Please select an account');
+      return;
+    }
 
     setState(() => _isSaving = true);
     _saveButtonController.forward();
@@ -130,6 +136,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
         tags: tags,
         date: _selectedDate,
         receiptImagePath: _receiptImagePath,
+        accountId: _selectedAccountId,
         isFromSms: ex?.isFromSms ?? false,
         smsSource: ex?.smsSource,
         createdAt: ex?.createdAt ?? now,
@@ -140,7 +147,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
           '${ex != null ? 'Updating' : 'Saving'} transaction id=${transaction.id} amount=${transaction.amount} type=${transaction.type.name} category=${transaction.categoryId}');
 
       if (ex != null) {
-        await ref.read(transactionProvider.notifier).update(transaction);
+        await ref.read(transactionProvider.notifier).update(ex, transaction);
       } else {
         await ref.read(transactionProvider.notifier).add(transaction);
       }
@@ -318,6 +325,13 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen>
                       onSelect: (id) =>
                           setState(() => _selectedCategoryId = id),
                     ).animate(delay: 120.ms).fadeIn(duration: 300.ms),
+                    const SizedBox(height: 16),
+                    // Account selector
+                    _AccountSelector(
+                      accounts: ref.watch(accountProvider),
+                      selectedId: _selectedAccountId,
+                      onSelect: (id) => setState(() => _selectedAccountId = id),
+                    ).animate(delay: 140.ms).fadeIn(duration: 300.ms),
                     const SizedBox(height: 16),
                     // Note
                     Padding(
@@ -802,6 +816,103 @@ class _ReceiptButton extends StatelessWidget {
             : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
         size: 22,
       ),
+    );
+  }
+}
+// ─── Account Selector ─────────────────────────────────────────────────────────
+class _AccountSelector extends StatelessWidget {
+  final List<AccountModel> accounts;
+  final String? selectedId;
+  final ValueChanged<String> onSelect;
+
+  const _AccountSelector({
+    required this.accounts,
+    required this.selectedId,
+    required this.onSelect,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Text(
+            'Account',
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface
+                  .withValues(alpha: 0.6),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 50,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            physics: const BouncingScrollPhysics(),
+            itemCount: accounts.length,
+            itemBuilder: (ctx, i) {
+              final acc = accounts[i];
+              final isSelected = acc.id == selectedId;
+              return GestureDetector(
+                onTap: () => onSelect(acc.id),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.easeOutExpo,
+                  margin: const EdgeInsets.only(right: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withValues(alpha: 0.06),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: isSelected
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withValues(alpha: 0.12),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        acc.icon,
+                        size: 18,
+                        color: isSelected
+                            ? Colors.white
+                            : Theme.of(context).colorScheme.onSurface,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        acc.name,
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: isSelected
+                              ? Colors.white
+                              : Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

@@ -9,6 +9,7 @@ import '../../core/services/notification_service.dart';
 import '../../core/utils/app_logger.dart';
 import '../../shared/providers/app_providers.dart';
 import '../categories/manage_categories_screen.dart';
+import 'manage_accounts_screen.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -111,6 +112,18 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     onTap: () => Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (_) => const ManageCategoriesScreen(),
+                      ),
+                    ),
+                  ),
+                  _SettingsDivider(),
+                  _SettingsTile(
+                    icon: Icons.account_balance_wallet_rounded,
+                    iconColor: const Color(0xFF0061A4),
+                    title: 'Accounts',
+                    subtitle: 'Manage Bank, Wallet, Cash, Savings',
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const ManageAccountsScreen(),
                       ),
                     ),
                   ),
